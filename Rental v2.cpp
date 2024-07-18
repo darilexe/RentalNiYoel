@@ -251,25 +251,35 @@ int main() {
             case 1: {
                 string title, genre, production, image_filename;
                 int copies;
+                fstream fp;
+
+                fp.open("video.txt", ios::out);
 
                 cout << "Enter Movie Title: ";
                 cin.ignore();
                 getline(cin, title);
+                fp << "Title: " << title << endl;
 
                 cout << "Enter Genre: ";
                 getline(cin, genre);
+                fp << "Genre: " << genre << endl;
 
                 cout << "Enter Production: ";
                 getline(cin, production);
+                fp << "Production: " << production << endl;
 
                 cout << "Enter Number of Copies: ";
                 cin >> copies;
+                fp << "Copies: " << copies << endl;
 
                 cout << "Enter Movie Image Filename: ";
                 cin.ignore();
                 getline(cin, image_filename);
+                fp << "Image Filename: " << image_filename << endl;
 
                 store.insertVideo(title, genre, production, copies, image_filename);
+                fp.close();
+                
                 break;
             }
 
