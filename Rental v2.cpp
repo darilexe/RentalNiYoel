@@ -136,7 +136,6 @@ public:
                 cout << "Do you still want to rent this movie? (y/n): ";
                 cin >> rentDecision;
                 if (rentDecision != 'y' && rentDecision != 'Y') {
-                    cout << "Returning to main menu." << endl;
                     return;
                 }
             }
@@ -285,10 +284,21 @@ int main() {
 
             case 2: {
                 int customerID;
-                cout << "Enter Customer ID: ";
-                cin >> customerID;
-                store.rentVideo(customerID);
-                break;
+                char retry;
+                do {
+                  enterID:
+		  cout << "Enter Customer ID: ";
+        	  cin >> customerID;
+            	  store.rentVideo(customerID);
+                
+                  cout << "Do you want to try again? (Y/N)" << endl;
+                  cin >> retry;
+        
+                 if (retry == 'y' || retry == 'Y') {
+                     goto enterID;
+                   }
+                } while (choice == 'y' || choice == 'Y');
+		break;
             }
 
             case 3: {
