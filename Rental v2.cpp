@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <stack>
 #include <iomanip>
+#include <fstream>
 
 using namespace std;
 
@@ -58,13 +59,32 @@ private:
     unordered_map<int, Video*> videos; // Map to store videos by Video_ID
     unordered_map<int, Customer*> customers; // Map to store customers by Customer_ID
     int nextVideoID; // Track the next available Video ID
-   	 int nextCustomerID; // Track the next available Customer ID
+   	int nextCustomerID; // Track the next available Customer ID
+
+    void saveNextVideoID() {
+        ofstream file("nextVideoID.txt");
+        if (file.is_open()) {
+            file << nextVideoID;
+            file.close();
+        }
+    }
+
+    void loadNextVideoID() {
+        ifstream file("nextVideoID.txt");
+        if (file.is_open()) {
+            file >> nextVideoID;
+            file.close();
+        } else {
+            nextVideoID = 1; // Default value if the file doesn't exist
+        }
+    }
 
 public:
-
 	
-    VideoStore() : nextVideoID(1), nextCustomerID(1) {}
-
+    VideoStore() : nextCustomerID(1) {
+        loadNextVideoID();
+    }
+    
     ~VideoStore() {
         // Clean up dynamically allocated memory
         for (auto& pair : videos) {
@@ -81,8 +101,22 @@ public:
     // Insert a new video
     void insertVideo(const string& title, const string& genre, const string& production,
                      int copies, const string& image_filename) {
-        Video* newVideo = new Video(nextVideoID++, title, genre, production, copies, image_filename);
+        int videoID = nextVideoID;
+        Video* newVideo = new Video(videoID, title, genre, production, copies, image_filename);
         videos[newVideo->Video_ID] = newVideo;
+
+        // Save to file
+        ofstream fp("video_" + to_string(videoID) + ".txt");
+        fp << "Video ID: " << videoID << endl;
+        fp << "Title: " << title << endl;
+        fp << "Genre: " << genre << endl;
+        fp << "Production: " << production << endl;
+        fp << "Copies: " << copies << endl;
+        fp << "Image Filename: " << image_filename << endl;
+        fp.close();
+
+        nextVideoID++;
+        saveNextVideoID();
     }
 
     // Show all videos
@@ -250,34 +284,25 @@ int main() {
             case 1: {
                 string title, genre, production, image_filename;
                 int copies;
-                fstream fp;
-
-                fp.open("video.txt", ios::out);
 
                 cout << "Enter Movie Title: ";
-                cin.ignore();
+                cin.ignore(); // Clear the newline character from the buffer
                 getline(cin, title);
-                fp << "Title: " << title << endl;
 
                 cout << "Enter Genre: ";
                 getline(cin, genre);
-                fp << "Genre: " << genre << endl;
 
                 cout << "Enter Production: ";
                 getline(cin, production);
-                fp << "Production: " << production << endl;
 
                 cout << "Enter Number of Copies: ";
                 cin >> copies;
-                fp << "Copies: " << copies << endl;
 
                 cout << "Enter Movie Image Filename: ";
-                cin.ignore();
+                cin.ignore(); // Clear the newline character from the buffer
                 getline(cin, image_filename);
-                fp << "Image Filename: " << image_filename << endl;
 
                 store.insertVideo(title, genre, production, copies, image_filename);
-                fp.close();
                 
                 break;
             }
