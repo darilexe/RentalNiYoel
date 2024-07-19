@@ -113,6 +113,9 @@ public:
         fp << "Production: " << production << endl;
         fp << "Copies: " << copies << endl;
         fp << "Image Filename: " << image_filename << endl;
+	    
+	cout <<"\nVideo ID Genrated! Video ID: " << newVideo->Video_ID << endl;
+	    
         fp.close();
 
         nextVideoID++;
