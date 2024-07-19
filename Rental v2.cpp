@@ -113,8 +113,8 @@ public:
         fp << "Production: " << production << endl;
         fp << "Copies: " << copies << endl;
         fp << "Image Filename: " << image_filename << endl;
-	    
-	cout <<"\nVideo ID Genrated! Video ID: " << newVideo->Video_ID << endl;
+        	    
+    	cout <<"\nVideo ID Genrated! Video ID: " << newVideo->Video_ID << endl;
 	    
         fp.close();
 
@@ -124,6 +124,7 @@ public:
 
     // Show all videos
     void showAllVideos() const {
+        ifstream ("");
         cout << "All Videos in the Store:" << endl;
         for (const auto& pair : videos) {
             pair.second->printInfo();
@@ -159,7 +160,7 @@ public:
             cin >> videoID;
 
             if (videos.find(videoID) == videos.end()) {
-                cout << "Invalid Video ID." << endl;
+                cout << "Invalid Video ID. Returning to main menu." << endl;
                 return;
             }
 
@@ -234,6 +235,15 @@ public:
         Customer* newCustomer = new Customer(nextCustomerID++, name, address);
         customers[newCustomer->Customer_ID] = newCustomer;
         cout << "\nCustomer ID Genrated! Customer ID: " << newCustomer->Customer_ID << endl;  
+        int customerID = newCustomer->Customer_ID;
+        
+        
+        // Save to file
+        ofstream fp("customer_" + to_string(customerID) + ".txt");
+        fp << "Customer ID: " << customerID << endl;
+        fp << "Name: " << name << endl;
+        fp << "Address: " << address << endl;
+        fp.close();
     }
 
     // Show customer details
