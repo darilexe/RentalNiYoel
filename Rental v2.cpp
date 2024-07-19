@@ -159,7 +159,7 @@ public:
             cin >> videoID;
 
             if (videos.find(videoID) == videos.end()) {
-                cout << "Invalid Video ID. Returning to main menu." << endl;
+                cout << "Invalid Video ID." << endl;
                 return;
             }
 
