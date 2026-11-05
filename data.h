@@ -8,8 +8,20 @@
 #include <stack>
 #include <iomanip>
 #include <fstream>
+#include <stdexcept>
 
 using namespace std;
+
+// Thrown when the input stream ends (e.g. Ctrl+D), so the program can exit cleanly
+// instead of looping forever on a closed stream.
+struct InputClosed : runtime_error {
+    InputClosed() : runtime_error("input closed") {}
+};
+
+// Safe input helpers: they re-prompt until the user enters something valid.
+int readInt(const string& prompt, int minValue, int maxValue);
+string readText(const string& prompt, size_t maxLength = 100);
+bool readYesNo(const string& prompt);
 
 struct Video {
     int Video_ID;
@@ -43,12 +55,21 @@ private:
     int nextVideoID;
     int nextCustomerID;
 
-    void saveNextVideoID();
-    void loadNextVideoID();
+    void saveCounter(const string& filename, int value) const;
+    int loadCounter(const string& filename) const;
+
+    Video* findVideo(int videoID) const;
+    Customer* findCustomer(int customerID) const;
 
 public:
+    static const int MAX_COPIES = 100;
+
     VideoStore();
     ~VideoStore();
+
+    // No copying: the store owns its Video and Customer pointers.
+    VideoStore(const VideoStore&) = delete;
+    VideoStore& operator=(const VideoStore&) = delete;
 
     void insertVideo(const string& title, const string& genre, const string& production,
                      int copies, const string& image_filename);
@@ -62,4 +83,3 @@ public:
 };
 
 #endif
-
