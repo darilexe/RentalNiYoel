@@ -48,26 +48,6 @@ g++ -std=c++17 -o rental main.cpp implementation.cpp
 ./rental
 ```
 
-## Tests
-
-`tests/run_tests.sh` feeds scripted input to the program and checks its output: 24 cases covering normal renting and returning plus every kind of bad input above. Each test must finish within 5 seconds, so an infinite loop counts as a failure.
-
-```bash
-tests/run_tests.sh
-```
-
-```
-ok    rent a video
-ok    return a rented video
-ok    letters at the main menu
-...
-ok    return a copy the customer doesn't have
-ok    return the same copy twice
-ok    corrupted ID file
-
-24 passed, 0 failed
-```
-
 ## Example session
 
 ```
@@ -104,6 +84,5 @@ Video 'Spirited Away' copy 2 rented to Juan Dela Cruz
 | `main.cpp` | The menu and main loop |
 | `implementation.cpp` | The `VideoStore`, `Video` and `Customer` code |
 | `data.h` | Struct and class declarations |
-| `tests/run_tests.sh` | Automated tests |
 | `Rental v2.cpp` | Earlier single-file version, kept for history (no error handling) |
 | `a.cpp` | First single-file version, kept for history |
